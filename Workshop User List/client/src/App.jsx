@@ -1,18 +1,19 @@
 import Footer from './components/Footer';
 import Header from './components/Header';
+import UserList from './components/UserList';
 import './styles.css';
 
 function App() {
 
   return (
     <div>
-   <Header/>
-   
-  <main class="main">
+      <Header />
 
-  </main>
-   <Footer/>
-   </div>
+      <main class="main">
+        <UserList />
+      </main>
+      <Footer />
+    </div>
   )
 }
 
