@@ -12,7 +12,23 @@ export default function Counter(props){
     //     );
     // }
 
-    let warning=null;
+    let message=null;
+    switch (count) {
+        case 1:
+            message='First blood';
+            break;
+        case 2:
+            message='Double kill';
+            break;
+        case 2:
+            message='Tripple kill';
+            break;
+            default:
+                message='Monster kill';
+        
+    }
+
+    let warning='';
     if(count<0){
       warning=<p>Invalid Count!</p>
     }
@@ -20,8 +36,15 @@ export default function Counter(props){
         <div>
             <h1>Counter</h1>
 
-            {warning}
-            
+        
+            {count<0
+            ? <p>Invalid count!</p>
+            : <p>Valid count!</p>
+            }
+
+           {count==0 && <p>Please start incrementing</p>}
+
+             <h4>{message}</h4>
             <p>Count: {count}</p>
 
             <button onClick={()=>setCount(count-1)}>-</button>
