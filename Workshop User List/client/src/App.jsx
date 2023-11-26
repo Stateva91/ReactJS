@@ -9,12 +9,12 @@ function App() {
     <div>
       <Header />
 
-      <main class="main">
+      <main className="main">
         <UserList />
       </main>
       <Footer />
     </div>
-  )
+  );
 }
 
 export default App
