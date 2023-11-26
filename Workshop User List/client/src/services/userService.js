@@ -10,6 +10,12 @@ export const getAll = async () => {
   
 
 };
+export const getOne=async(userId)=>{
+   const response=await fetch(`${baseUrl}/${userId}`);
+   const result=await response.json;
+
+   return result;
+}
 
 export const create=async(data)=>{
     const body= {
@@ -31,10 +37,19 @@ export const create=async(data)=>{
     const response=await fetch(baseUrl, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
         body: JSON.stringify(body),
     })
     const result=await response.json();
+    console.log(result);
     return result;
 }; 
+
+export const remove=async(userId)=>{
+    const response=await fetch(`${baseUrl}/${userId}`, {
+        method: 'DELETE',
+    });
+    const result=await response.json();
+    return result;
+}

@@ -1,14 +1,24 @@
 import { formatDate } from "../utils/dataUtils";
 
 const UserListItem = ({
+    userId,
     firstName,
     lastName,
     email,
     phoneNumber,
     createdAt,
     imageUrl,
+    onInfoClick,
+    onDeleteClick
 
 }) =>{
+
+  const infoClickHandler=()=>{
+    onInfoClick(userId);
+  };
+  const deleteClickHandler=()=>{
+    onDeleteClick(userId);
+  }
     return (
         <tr>
               <td>
@@ -31,7 +41,7 @@ const UserListItem = ({
                     </path>
                   </svg>
                 </button>
-                <button className="btn delete-btn" title="Delete">
+                <button className="btn delete-btn" title="Delete" onClick={deleteClickHandler}>
                   <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash"
                     className="svg-inline--fa fa-trash" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 498 512">
                     <path fill="currentColor"
@@ -39,7 +49,7 @@ const UserListItem = ({
                     </path>
                   </svg>
                 </button>
-                <button className="btn info-btn" title="Info">
+                <button className="btn info-btn" title="Info" onClick={infoClickHandler}>
                   <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="info"
                     className="svg-inline--fa fa-info" role="img" xmlns="http://www.w3.org/2000/svg"
                     viewBox="-150 0 512 612">

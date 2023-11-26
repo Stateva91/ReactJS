@@ -2,14 +2,24 @@ import { useEffect, useState } from "react";
 import * as userService from "../services/UserService";
 import UserListItem from "./UserListItem";
 import CreateUserModal from "./CreateUserModal";
+import UserInfoModal from "./UserInfoModal";
+import UserDeleteModal from "./UserDeleteModal";
+import Spinner from "./Spinner";
 
 const UserListTable = ()=>{
     const [users, setUsers]= useState([]);
+    const [isLoading, setIaLoading]= useState(false);
     const [showCreate, setShowCreate]=useState(false);
+    const [showInfo, setShowInfo]= useState(false);
+    const [selectedUser, setSelectedUser]=useState(null);
+    const [showDelete, setShowDelete]=useState(false);
     useEffect(()=>{
+      setIaLoading(true);
+
         userService.getAll()
         .then(result=> setUsers(result))
-        .catch(err=>console.log(err));
+        .catch(err=>console.log(err))
+        .finally(()=> setIaLoading(false));
     }, []);
 
     const createUserClickHandler=() =>{
@@ -39,6 +49,25 @@ const UserListTable = ()=>{
     //Close the modal
     setShowCreate(false);
     };
+    const userInfoClickHandler= async(userId)=>{
+     setSelectedUser(userId);
+     setShowInfo(true);
+    };
+
+    const deleteUserClickHandler= (userId)=>{
+      setSelectedUser(userId);
+        setShowDelete(true);
+    }
+    const deleteUserHandler =async()=>{
+      //Remove user from server
+         await userService.remove(selectedUser);
+
+         //Remove user from state
+         setUsers(state=>state.filter(user=>user._id !==selectedUser ))
+
+         //Close the delete modal
+         setShowDelete(false);
+    }
 
     return(
         <div className="table-wrapper">
@@ -46,7 +75,23 @@ const UserListTable = ()=>{
           <CreateUserModal 
           onClose={hideCreateUserModal}
           onUserCreate={userCreateHandler}
+          
           />)}
+
+          {showInfo && (
+          <UserInfoModal 
+          onClose={()=> setShowInfo(false)} 
+          userId={selectedUser}
+          />
+        )}
+        {showDelete && (
+           <UserDeleteModal
+           onClose={()=> setShowDelete(false)}
+           onDelete={deleteUserHandler} 
+          />
+          )}
+
+          {isLoading && <Spinner />}
         <table className="table">
           <thead>
             <tr>
@@ -107,12 +152,15 @@ const UserListTable = ()=>{
                 <UserListItem
                 // {...user}
               key={user._id}
+              userId={user._id}
               createdAt={user.createdAt}
               email={user.email}
               firstName={user.firstName}
               imageUrl={user.imageUrl}
               lastName={user.lastName}
               phoneNumber={user.phoneNumber}
+              onInfoClick={userInfoClickHandler}
+              onDeleteClick={deleteUserClickHandler}
                 />
                 
             ))}
