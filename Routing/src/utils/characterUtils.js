@@ -1,0 +1,1 @@
+export const mormalizeName=(name)=>name.replace (/ /g, '-').toLowerCase();
