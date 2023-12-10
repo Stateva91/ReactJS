@@ -25,7 +25,8 @@ export default function GameDetails() {
             formData.get('username'),
             formData.get('comment')
         );
-        console.log(newComment);
+        setComments(state=>[...state, newComment]);
+        
     }
     return (
         <section id="game-details">
@@ -33,7 +34,7 @@ export default function GameDetails() {
             <div className="info-section">
 
                 <div className="game-header">
-                    <img className="game-img" src="images/MineCraft.png" />
+                    <img className="game-img" src={game.imageUrl} />
                     <h1>Bright</h1>
                     <span className="levels">MaxLevel: 4</span>
                     <p className="type">Action, Crime, Fantasy</p>
@@ -50,9 +51,9 @@ export default function GameDetails() {
                 <div className="details-comments">
                     <h2>Comments:</h2>
                     <ul>
-                        {comments.map(({username, text}) => {
+                        {comments.map(({_id, username, text}) => {
 
-                            <li className="comment">
+                            <li key={_id} className="comment">
                                 <p>{username}: {text}</p>
                             </li>
                         })}
