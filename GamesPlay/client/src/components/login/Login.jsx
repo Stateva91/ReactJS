@@ -1,10 +1,19 @@
 import useForm from "../../hooks/useForm"
 
+const LoginFormKeys={
 
-export default function Login(){
-    const {values, onChange, onSubmit}=useForm({
-        email: '',
-        password: '',
+    Email: 'email',
+    Password: 'password'
+
+}
+
+export default function Login({
+    loginSubmitHandler,
+}){
+    
+    const {values, onChange, onSubmit}=useForm(loginSubmitHandler,{
+    [LoginFormKeys.email]: '',
+    [LoginFormKeys.password]: '',
     });
     return(
         <section id="login-page" className="auth">
@@ -17,17 +26,17 @@ export default function Login(){
                     <input 
                     type="email" 
                     id="email"
-                     name="email" 
+                     name={LoginFormKeys.Email}
                      placeholder="Sokka@gmail.com"
                      onChange={onChange}
-                     value={values['email']}/>
+                     value={values[LoginFormKeys.email]}/>
 
                     <label htmlFor="login-pass">Password:</label>
                     <input type="password" 
                     id="login-password"
-                     name="password"
+                     name={LoginFormKeys.Password}
                       onChange={onChange}
-                      value={values.password}/>
+                      value={values[LoginFormKeys.password]}/>
                     <input type="submit" className="btn submit" value="Login" />
                     <p className="field">
                         <span>If you don't have profile click <a href="#">here</a></span>
