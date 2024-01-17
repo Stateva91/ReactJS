@@ -7,6 +7,7 @@ const buildOptions = (data) => {
             'content-type': 'application/json'
         };
     }
+
     const token = localStorage.getItem('accessToken');
 
     if (token) {
@@ -15,10 +16,11 @@ const buildOptions = (data) => {
             'X-Authorization': token
         };
     }
+
     return options;
 };
 
-export const request = async (method, url, data) => {
+const request = async (method, url, data) => {
     const response = await fetch(url, {
         ...buildOptions(data),
         method,

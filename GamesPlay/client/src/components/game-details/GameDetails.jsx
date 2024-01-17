@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useContext, useEffect, useReducer, useState, useMemo } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import * as gameService from '../../services/gameService';
 import * as commentService from '../../services/commentService';
 import AuthContext from "../../contexts/authContext";
-
-import useForm from "../../hooks/useForm";
+import reducer from './commentReducer';
+import useForm from '../../hooks/useForm';
+import { pathToUrl } from "../../utils/pathUtils";
 import Path from "../../paths";
+
 export default function GameDetails() {
     const navigate = useNavigate();
     const { email, userId } = useContext(AuthContext);

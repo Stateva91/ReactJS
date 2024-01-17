@@ -1,3 +1,5 @@
+
+import { lazy, Suspense } from 'react';
 import { Routes, Route, useNavigate } from "react-router-dom"
 
 import * as authService from './services/authService';
@@ -7,11 +9,17 @@ import GameList from "./components/game-list/GameList"
 import GameCreate from "./components/game-create/GameCreate"
 import Login from "./components/login/Login"
 import Register from "./components/register/Register"
-import GameDetails from "./components/game-details/GameDetails"
+// import GameDetails from "./components/game-details/GameDetails"
 import { useState } from "react"
 import AuthContext from "./contexts/authContext"
 import Path from "./paths";
 import Logout from "./components/logout/Logout";
+import GameEdit from "./components/game-edit/GameEdit";
+import ErrorBoundary from './components/ErrorBoundary';
+import AuthGuard from "./components/guards/AuthGuard";
+
+import { AuthProvider } from './contexts/authContext';
+const GameDetails=lazy(()=> import('./components/game-details/GameDetails'))
 
 
 function App() {
@@ -53,22 +61,29 @@ function App() {
  }
 
   return (
-    <AuthContext.Provider value={{values}}>
-    <div id="box">
-    <Header/>
-    <Routes>
-     <Route path={Path.Home} element={<Home/>}></Route>
-     <Route path="/games" element={<GameList/>}></Route>
-     <Route path="/games/create" element={<GameCreate/>}></Route>
-     <Route path="/games/:gameId" element={<GameDetails/>}></Route>
-     <Route path="/login" element={<Login />}></Route>
-     <Route path="/register" element={<Register/>}></Route>
-     <Route path={Path.Logout} element={<Logout />} />
-    </Routes>
-    
-    </div>
-    </AuthContext.Provider>
+    <ErrorBoundary>
+    <AuthProvider>
+        <div id="box">
+            <Header />
+            <Suspense fallback={<h1>Loading...</h1>}>
+                <Routes>
+                    <Route path={Path.Home} element={<Home />} />
+                    <Route path="/games" element={<GameList />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/games/:gameId" element={<GameDetails />} />
+
+                    <Route element={<AuthGuard />}>
+                        <Route path="/games/create" element={<GameCreate />}/>
+                        <Route path={Path.GameEdit} element={<GameEdit />} />
+                        <Route path={Path.Logout} element={<Logout />} />
+                    </Route>
+                </Routes>
+            </Suspense>
+        </div>
+    </AuthProvider>
+</ErrorBoundary>
   )
 }
 
-export default App
+export default App;
